@@ -33,7 +33,7 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
         await collection.insert_one(data)
 
     @classmethod
-    async def find_all(cls, query: dict, limit: int = None, projection: dict = None, sort: tuple = None):
+    async def find_all(cls, query: dict, projection: dict = None, limit: int = None, sort: tuple = None):
         collection = await cls.get_base_collection()
         result = await collection.find(query, projection)
         if sort:
@@ -54,4 +54,10 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
         collection = await cls.get_base_collection()
         new = {"$set": new_data}
         result = await collection.update_one(query, new, array_filters=array_filters, upsert=upsert)
+        return result
+
+    @classmethod
+    async def delete_one(cls, query: dict):
+        collection = await cls.get_base_collection()
+        result = await collection.delete_one(query)
         return result
