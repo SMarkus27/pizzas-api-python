@@ -6,7 +6,7 @@ from src.core.interfaces.infrastructures.mongodb.interface import IMongoDBInfra
 
 
 class MongoDBInfra(IMongoDBInfra):
-    _mongodb_connection_url: str = "my_connecting_string"
+    _mongodb_connection_url: str = "my_mongo_connection_string"
     _mongodb_client: AsyncIOMotorClient = None
 
     @classmethod
@@ -15,6 +15,6 @@ class MongoDBInfra(IMongoDBInfra):
             raise Exception("You forgot it something")
 
         if cls._mongodb_client is None:
-            cls._mongo_client = AsyncIOMotorClient(cls._mongodb_connection_url)
+            cls._mongodb_client = AsyncIOMotorClient(cls._mongodb_connection_url)
         return cls._mongodb_client
 
