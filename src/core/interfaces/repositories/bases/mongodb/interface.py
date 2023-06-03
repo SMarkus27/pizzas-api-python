@@ -26,3 +26,8 @@ class IBaseMongoDBRepo(metaclass=ABCMeta):
     @abstractmethod
     async def update_one(cls, query: dict, new_data: dict, array_filters: list = None, upsert: bool = False):
         pass
+
+    @classmethod
+    @abstractmethod
+    async def delete_one(cls, query: dict):
+        pass

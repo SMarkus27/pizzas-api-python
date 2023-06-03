@@ -16,20 +16,20 @@ class IPizzaService(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    async def find_all_pizzas(cls, pizza_repo=PizzasRepository):
+    async def find_all_pizzas(cls, query: dict, pizza_repo=PizzasRepository):
         pass
 
     @classmethod
     @abstractmethod
-    async def find_one_pizza(cls, pizza_repo=PizzasRepository):
+    async def find_one_pizza(cls, query: dict, pizza_repo=PizzasRepository):
         pass
 
     @classmethod
     @abstractmethod
-    async def update_pizza(cls, pizza_repo=PizzasRepository):
+    async def update_pizza(cls, query: dict, new_data: dict, pizza_repo=PizzasRepository):
         pass
 
     @classmethod
     @abstractmethod
-    async def delete_pizza(cls, pizza_repo=PizzasRepository):
+    async def delete_pizza(cls, query: dict, pizza_repo=PizzasRepository):
         pass
