@@ -1,1 +1,1 @@
-from src.routes.pizza import route
+from src.routes.pizzas import route
