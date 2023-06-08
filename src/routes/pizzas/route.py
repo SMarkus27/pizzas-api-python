@@ -11,29 +11,29 @@ async def create_pizza(pizza_data: dict):
         PizzasController.create_pizza, {"payload": pizza_data})
 
 
-@router.get("api/pizzas/")
+@router.get("/api/pizzas/")
 async def get_all_pizzas():
     return await BaseController.run(
-        PizzasController.get_all_pizzas,{}
+        PizzasController.get_all_pizzas, {}
     )
 
 
-@router.get("api/pizzas/{pizza_id}")
-async def get_one_pizza(pizza_id: str):
+@router.get("/api/pizzas/{pizza_name}")
+async def get_one_pizza(pizza_name: str):
     return await BaseController.run(
-        PizzasController.get_pizza, {"pizza_id": pizza_id}
+        PizzasController.get_pizza, {"pizza_name": pizza_name}
     )
 
 
-@router.put("api/pizzas/{pizza_id}")
-async def update_pizza(pizza_id: str, new_data: dict):
+@router.put("/api/pizzas/{pizza_name}")
+async def update_pizza(pizza_name: str, new_data: dict):
     return await BaseController.run(
-        PizzasController.get_all_pizzas, {"pizza_id": pizza_id, "data": new_data}
+        PizzasController.get_all_pizzas, {"pizza_name": pizza_name, "data": new_data}
     )
 
 
-@router.delete("api/pizzas/{pizza_id}")
+@router.delete("/api/pizzas/{pizza_id}")
 async def delete_pizza(pizza_id: str):
     return await BaseController.run(
-        PizzasController.get_all_pizzas, {"pizza_id": pizza_id}
+        PizzasController.get_all_pizzas, {"pizza_name": pizza_id}
     )

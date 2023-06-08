@@ -35,7 +35,7 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
     @classmethod
     async def find_all(cls, query: dict, projection: dict = None, limit: int = None, sort: tuple = None):
         collection = await cls.get_base_collection()
-        result = await collection.find(query, projection)
+        result = collection.find(query, projection)
         if sort:
             result.sort(*sort)
 

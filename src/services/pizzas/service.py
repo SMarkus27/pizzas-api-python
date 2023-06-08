@@ -14,15 +14,21 @@ class PizzaService(IPizzaService):
         }
 
     @classmethod
-    async def find_all_pizzas(cls, data: dict, pizza_repo=PizzasRepository):
+    async def find_all_pizzas(cls, payload: dict, pizza_repo=PizzasRepository):
         projection = {"_id": False}
-        result = await pizza_repo.find_all(data, projection)
-        return result
+        result = await pizza_repo.find_all({}, projection)
+        return {
+            "status_code": 200,
+            "message":"",
+            "result": result
+        }
 
     @classmethod
-    async def find_one_pizza(cls, data: dict, pizza_repo=PizzasRepository):
+    async def find_one_pizza(cls, payload: dict, pizza_repo=PizzasRepository):
         projection = {"_id": False}
-        result = await pizza_repo.find_one(data, projection)
+        pizza_name = payload.get("pizza_name")
+        query = {"name": {"$regex": pizza_name, "$options": "i"}}
+        result = await pizza_repo.find_one(query, projection)
         return result
 
     @classmethod

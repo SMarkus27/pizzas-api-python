@@ -13,7 +13,7 @@ class PizzasController:
 
     @staticmethod
     async def get_pizza(payload: dict):
-        return await PizzaService.find_all_pizzas(payload)
+        return await PizzaService.find_one_pizza(payload)
 
     @staticmethod
     async def update_pizza(payload: dict):
