@@ -32,6 +32,7 @@ class PizzaService(IPizzaService):
     async def find_all_pizzas(cls, payload: dict, pizza_repo=PizzasRepository):
         projection = {"_id": False}
         result = await pizza_repo.find_all({}, projection)
+
         response = BaseResponse(
             result=result,
             status_code=status.HTTP_302_FOUND,
