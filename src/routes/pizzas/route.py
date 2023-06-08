@@ -1,14 +1,15 @@
 from src.controllers.base.controller import BaseController
 from src.controllers.pizzas.controller import PizzasController
+from src.domain.models.pizza.model import PizzaModel
 from src.routes.base.route import BaseRouter
 
 router = BaseRouter.get_router_instance()
 
 
 @router.post("/api/pizzas/")
-async def create_pizza(pizza_data: dict):
+async def create_pizza(pizza_data: PizzaModel):
     return await BaseController.run(
-        PizzasController.create_pizza, {"payload": pizza_data})
+        PizzasController.create_pizza, {"payload": pizza_data.dict()})
 
 
 @router.get("/api/pizzas/")
@@ -26,9 +27,9 @@ async def get_one_pizza(pizza_name: str):
 
 
 @router.put("/api/pizzas/{pizza_name}")
-async def update_pizza(pizza_name: str, new_data: dict):
+async def update_pizza(pizza_name: str, new_data: PizzaModel):
     return await BaseController.run(
-        PizzasController.update_pizza, {"pizza_name": pizza_name, "data": new_data}
+        PizzasController.update_pizza, {"pizza_name": pizza_name, "data": new_data.dict()}
     )
 
 
