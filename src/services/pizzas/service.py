@@ -5,10 +5,12 @@ from src.repositories.pizzas.repository import PizzasRepository
 class PizzaService(IPizzaService):
 
     @classmethod
-    async def create_pizza(cls, data: dict, pizza_repo=PizzasRepository):
+    async def create_pizza(cls, payload: dict, pizza_repo=PizzasRepository):
+        data = payload.get("payload")
         await pizza_repo.insert_one(data)
         return {
             "status_code": 201,
+            "message": "Pizza created!"
         }
 
     @classmethod
