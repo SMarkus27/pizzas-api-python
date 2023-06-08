@@ -40,6 +40,8 @@ class PizzaService(IPizzaService):
         return "ok"
 
     @classmethod
-    async def delete_pizza(cls, data: dict, pizza_repo=PizzasRepository):
-        await pizza_repo.delete_one(data)
+    async def delete_pizza(cls, payload: dict, pizza_repo=PizzasRepository):
+        pizza_name = payload.get("pizza_name")
+        query = {"name": pizza_name}
+        await pizza_repo.delete_one(query)
         return "ok"

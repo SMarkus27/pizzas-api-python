@@ -35,5 +35,5 @@ async def update_pizza(pizza_name: str, new_data: dict):
 @router.delete("/api/pizzas/{pizza_id}")
 async def delete_pizza(pizza_id: str):
     return await BaseController.run(
-        PizzasController.get_all_pizzas, {"pizza_name": pizza_id}
+        PizzasController.delete_pizza, {"pizza_name": pizza_id}
     )
