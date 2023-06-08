@@ -28,7 +28,7 @@ async def get_one_pizza(pizza_name: str):
 @router.put("/api/pizzas/{pizza_name}")
 async def update_pizza(pizza_name: str, new_data: dict):
     return await BaseController.run(
-        PizzasController.get_all_pizzas, {"pizza_name": pizza_name, "data": new_data}
+        PizzasController.update_pizza, {"pizza_name": pizza_name, "data": new_data}
     )
 
 

@@ -32,8 +32,11 @@ class PizzaService(IPizzaService):
         return result
 
     @classmethod
-    async def update_pizza(cls, data: dict, pizza_repo=PizzasRepository):
-        await pizza_repo.update_one(data, {})
+    async def update_pizza(cls, payload: dict, pizza_repo=PizzasRepository):
+        pizza_name = payload.get("pizza_name")
+        query = {"name": pizza_name}
+        new_data = payload.get("data")
+        await pizza_repo.update_one(query, new_data)
         return "ok"
 
     @classmethod
