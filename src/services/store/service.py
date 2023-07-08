@@ -9,8 +9,8 @@ class StoreService:
     @classmethod
     async def add_item_store(cls, payload: dict, store_repo=StoreRepository):
         store_data = payload.get("payload")
-        pizza_name = store_data.get("pizza_name")
-        query = {"pizza_name": pizza_name}
+        pizza_name = store_data.get("name")
+        query = {"name": pizza_name}
         projection = {"_id": False}
 
         result = await store_repo.find_one(query, projection)
@@ -33,8 +33,8 @@ class StoreService:
     async def reduce_item_store(cls, payload: dict, store_repo=StoreRepository):
         store_data = payload.get("payload")
 
-        pizza_name = store_data.get("pizza_name")
-        query = {"pizza_name": pizza_name}
+        pizza_name = store_data.get("name")
+        query = {"name": pizza_name}
         projection = {"_id": False}
 
         result = await store_repo.find_one(query, projection)

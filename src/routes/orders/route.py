@@ -1,5 +1,6 @@
 from src.controllers.base.controller import BaseController
 from src.controllers.orders.controller import OrderController
+from src.domain.models.orders.model import OrdersModel
 from src.routes.base.route import BaseRouter
 
 router = BaseRouter.get_router_instance()
@@ -20,7 +21,7 @@ async def get_order(order_id: str):
 
 
 @router.post("/api/order/", tags=["orders"])
-async def get_pizza(order_data: dict):
+async def get_pizza(order_data: OrdersModel):
     return await BaseController.run(
-        OrderController.get_pizza, {"order_data": order_data}
+        OrderController.get_pizza, {"order_data": order_data.dict()}
     )

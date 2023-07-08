@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class StoreModel(BaseModel):
+class OrdersModel(BaseModel):
     name: str
     quantity: int
