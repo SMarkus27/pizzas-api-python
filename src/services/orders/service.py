@@ -73,6 +73,7 @@ class OrderService:
         await StoreService.reduce_item_store(payload)
 
         pizza_data = await pizza_repo.find_one(query, {"_id": False})
+        print(pizza_data)
         pizza_price = pizza_data.get("price")
 
         order_data.update({"created_at": datetime.now().isoformat(),
