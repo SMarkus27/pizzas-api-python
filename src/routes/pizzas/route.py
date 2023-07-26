@@ -1,3 +1,5 @@
+from fastapi import Header
+
 from src.controllers.base.controller import BaseController
 from src.controllers.pizzas.controller import PizzasController
 from src.domain.models.pizza.model import PizzaModel
@@ -13,9 +15,9 @@ async def create_pizza(pizza_data: PizzaModel):
 
 
 @router.get("/api/pizzas/", tags=["Pizzas"])
-async def get_all_pizzas():
+async def get_all_pizzas(size=Header(), page=Header()):
     return await BaseController.run(
-        PizzasController.get_all_pizzas, {}
+        PizzasController.get_all_pizzas, {"size": size, "page": page}
     )
 
 

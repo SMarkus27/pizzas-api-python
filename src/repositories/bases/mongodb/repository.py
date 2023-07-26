@@ -1,4 +1,6 @@
 # Third-Party Library
+from math import ceil
+
 from motor.motor_asyncio import AsyncIOMotorCollection
 
 # Inner
@@ -61,3 +63,26 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
         collection = await cls.get_base_collection()
         result = await collection.delete_one(query)
         return result
+
+    @classmethod
+    async def find_all_paginated(cls, query: dict, skip: int, limit: int, projection: dict = None, sort: tuple = None):
+        collection = await cls.get_base_collection()
+        total_items = await collection.count_documents(query)
+
+        if not total_items:
+            return [], 0
+
+        result = collection.find(query, projection)
+        if sort:
+            result.sort(*sort)
+
+        result.skip(skip).limit(limit)
+        return await result.to_list(limit), total_items
+
+    @staticmethod
+    def calculate_skip(limit: int, page: int = 1):
+        return (page - 1) * limit
+
+    @staticmethod
+    def calculate_pages(total_items: int, limit: int):
+        return ceil(total_items / limit)

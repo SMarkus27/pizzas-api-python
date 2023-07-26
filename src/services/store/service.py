@@ -78,9 +78,8 @@ class StoreService:
 
         new_quantity = old_quantity - quantity
 
-        new_quantity.update({"updated_at": datetime.now().isoformat()})
-
-        await store_repo.update_one(query, {"quantity": new_quantity})
+        await store_repo.update_one(query, {"quantity": new_quantity,
+                                            "updated_at": datetime.now().isoformat()})
 
         return BaseResponse(
             result=[],

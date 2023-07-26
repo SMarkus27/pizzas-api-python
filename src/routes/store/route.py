@@ -17,3 +17,4 @@ async def remove_item_store(store_data: StoreModel):
     return await BaseController.run(
         StoreController.remove_item_store, {"payload": store_data.dict()}
     )
+

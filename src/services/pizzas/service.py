@@ -1,7 +1,9 @@
 from datetime import datetime
 from fastapi import status
+
 from src.core.interfaces.services.pizzas.interface import IPizzaService
 from src.domain.models.responses.base.model import BaseResponse
+from src.domain.models.responses.orders.model import OrdersResponse
 from src.repositories.pizzas.repository import PizzasRepository
 
 
@@ -39,10 +41,17 @@ class PizzaService(IPizzaService):
     @classmethod
     async def find_all_pizzas(cls, payload: dict, pizza_repo=PizzasRepository):
         projection = {"_id": False}
-        result = await pizza_repo.find_all({}, projection)
+        limit = int(payload.get("size"))
+        page = int(payload.get("page"))
 
-        response = BaseResponse(
+        skip = pizza_repo.calculate_skip(limit, page)
+
+        result, total_items = await pizza_repo.find_all_paginated({}, skip, limit, projection)
+        total_pages = pizza_repo.calculate_pages(total_items, limit)
+
+        response = OrdersResponse(
             result=result,
+            total_pages=total_pages,
             status_code=status.HTTP_302_FOUND,
             message=""
 
