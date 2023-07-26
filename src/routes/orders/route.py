@@ -1,3 +1,5 @@
+from fastapi import Header
+
 from src.controllers.base.controller import BaseController
 from src.controllers.orders.controller import OrderController
 from src.domain.models.orders.model import OrdersModel
@@ -7,9 +9,9 @@ router = BaseRouter.get_router_instance()
 
 
 @router.get("/api/order", tags=["orders"])
-async def get_orders():
+async def get_orders(size=Header(), page=Header()):
     return await BaseController.run(
-        OrderController.get_orders, {}
+        OrderController.get_orders, {"size": size, "page": page}
     )
 
 

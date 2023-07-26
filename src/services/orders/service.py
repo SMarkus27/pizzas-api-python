@@ -4,6 +4,7 @@ from uuid import uuid4
 from fastapi import status
 
 from src.domain.models.responses.base.model import BaseResponse
+from src.domain.models.responses.orders.model import OrdersResponse
 from src.repositories.orders.repository import OrderRepository
 from src.repositories.pizzas.repository import PizzasRepository
 from src.repositories.store.repository import StoreRepository
@@ -15,10 +16,17 @@ class OrderService:
     @classmethod
     async def get_orders(cls, payload: dict, order_repo=OrderRepository):
         projection = {"_id": False}
-        result = await order_repo.find_all({}, projection)
+        limit = int(payload.get("size"))
+        page = int(payload.get("page"))
 
-        response = BaseResponse(
+        skip = order_repo.calculate_skip(limit, page)
+
+        result, total_items = await order_repo.find_all_paginated({}, skip, limit, projection)
+        total_pages = order_repo.calculate_pages(total_items, limit)
+
+        response = OrdersResponse(
             result=result,
+            total_pages=total_pages,
             status_code=status.HTTP_302_FOUND,
             message="All orders"
 
