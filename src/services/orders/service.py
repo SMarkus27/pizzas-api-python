@@ -51,6 +51,13 @@ class OrderService:
         pizza_name = order_data.get("name")
         query = {"name": pizza_name}
 
+        quantity = order_data.get("quantity")
+        if quantity <= 0:
+            return {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": f"Invalid Quantity: {quantity}. Quantity must be greater than zero"
+            }
+
         result = await store_repo.find_one(query, {"_id": False})
 
         if not result:
@@ -73,7 +80,6 @@ class OrderService:
         await StoreService.reduce_item_store(payload)
 
         pizza_data = await pizza_repo.find_one(query, {"_id": False})
-        print(pizza_data)
         pizza_price = pizza_data.get("price")
 
         order_data.update({"created_at": datetime.now().isoformat(),
