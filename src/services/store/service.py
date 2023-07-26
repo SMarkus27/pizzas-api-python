@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import status
 
 from src.domain.models.responses.base.model import BaseResponse
@@ -13,6 +15,13 @@ class StoreService:
         query = {"name": pizza_name}
         projection = {"_id": False}
 
+        quantity = store_data.get("quantity")
+        if quantity <= 0:
+            return {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": f"Invalid Quantity: {quantity}. Quantity must be greater than zero"
+            }
+
         result = await store_repo.find_one(query, projection)
         if not result:
             await store_repo.insert_one(store_data)
@@ -20,6 +29,7 @@ class StoreService:
 
         old_quantity = result.get("quantity")
         new_quantity = old_quantity + store_data["quantity"]
+        new_quantity.update({"created_at": datetime.now().isoformat()})
 
         await store_repo.update_one(query, {"quantity": new_quantity})
 
@@ -37,6 +47,13 @@ class StoreService:
         query = {"name": pizza_name}
         projection = {"_id": False}
 
+        quantity = store_data.get("quantity")
+        if quantity <= 0:
+            return {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": f"Invalid Quantity: {quantity}. Quantity must be greater than zero"
+            }
+
         result = await store_repo.find_one(query, projection)
         if not result:
             return BaseResponse(
@@ -53,7 +70,16 @@ class StoreService:
                     message="Item empty"
                 ).__dict__
 
-        new_quantity = old_quantity - store_data["quantity"]
+        if quantity > old_quantity:
+            return {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": f"Invalid Quantity: {quantity}. Quantity limit must be less than {old_quantity}"
+            }
+
+        new_quantity = old_quantity - quantity
+
+        new_quantity.update({"updated_at": datetime.now().isoformat()})
+
         await store_repo.update_one(query, {"quantity": new_quantity})
 
         return BaseResponse(

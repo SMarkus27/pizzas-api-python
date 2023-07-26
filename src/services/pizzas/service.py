@@ -13,6 +13,14 @@ class PizzaService(IPizzaService):
         pizza_name = data.get("name")
         query = {"name": pizza_name}
         projection = {"_id": False}
+
+        price = data.get("price")
+        if price <= 0:
+            return {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": f"Price invalid: {price}. Price must be greater than zero"
+            }
+
         pizza_data = await pizza_repo.find_one(query, projection)
 
         if pizza_data:
@@ -70,6 +78,13 @@ class PizzaService(IPizzaService):
         projection = {"_id": False}
         new_data = payload.get("data")
         new_data.update({"updated_at": datetime.now().isoformat()})
+
+        price = new_data.get("price")
+        if price <= 0:
+            return {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": f"Price invalid: {price}. Price must be greater than zero"
+            }
 
         result = await pizza_repo.find_one(query, projection)
         if not result:
