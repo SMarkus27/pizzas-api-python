@@ -1,3 +1,5 @@
+from fastapi import Header
+
 from src.controllers.base.controller import BaseController
 from src.controllers.store.controller import StoreController
 from src.domain.models.store.model import StoreModel
@@ -18,3 +20,9 @@ async def remove_item_store(store_data: StoreModel):
         StoreController.remove_item_store, {"payload": store_data.dict()}
     )
 
+
+@router.get("/api/store/", tags=["store"])
+async def get_all_items(size=Header(), page=Header()):
+    return await BaseController.run(
+        StoreController.get_all_items, {"size": size, "page": page}
+    )

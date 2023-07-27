@@ -1,5 +1,5 @@
 from src.domain.models.responses.base.model import BaseResponse
 
 
-class PizzasResponse(BaseResponse):
+class StoreResponse(BaseResponse):
     total_pages: int
