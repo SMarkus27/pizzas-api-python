@@ -3,6 +3,7 @@ from datetime import datetime
 from fastapi import status
 
 from src.domain.models.responses.base.model import BaseResponse
+from src.domain.models.responses.store.model import StoreResponse
 from src.repositories.store.repository import StoreRepository
 
 
@@ -24,15 +25,19 @@ class StoreService:
 
         result = await store_repo.find_one(query, projection)
         if not result:
+            store_data.update({"created_at": datetime.now().isoformat()})
             await store_repo.insert_one(store_data)
-            result = {"quantity": 0}
+            return BaseResponse(
+                result=[],
+                status_code=status.HTTP_201_CREATED,
+                message="Item stored"
+            ).__dict__
 
         old_quantity = result.get("quantity")
         new_quantity = old_quantity + store_data["quantity"]
-        new_quantity.update({"created_at": datetime.now().isoformat()})
 
-        await store_repo.update_one(query, {"quantity": new_quantity})
-
+        await store_repo.update_one(query, {"quantity": new_quantity,
+                                            "updated_at": datetime.now().isoformat()})
         return BaseResponse(
                 result=[],
                 status_code=status.HTTP_201_CREATED,
@@ -87,3 +92,22 @@ class StoreService:
             message="Store Updated"
         ).__dict__
 
+    @classmethod
+    async def get_all_items(cls, payload: dict, store_repo=StoreRepository):
+        projection = {"_id": False}
+        limit = int(payload.get("size"))
+        page = int(payload.get("page"))
+
+        skip = store_repo.calculate_skip(limit, page)
+
+        result, total_items = await store_repo.find_all_paginated({}, skip, limit, projection)
+        total_pages = store_repo.calculate_pages(total_items, limit)
+
+        response = StoreResponse(
+            result=result,
+            total_pages=total_pages,
+            status_code=status.HTTP_302_FOUND,
+            message=""
+
+        ).__dict__
+        return response
