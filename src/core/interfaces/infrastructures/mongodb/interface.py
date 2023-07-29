@@ -4,7 +4,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 
 class IMongoDBInfra(metaclass=ABCMeta):
-
     @classmethod
     def __subclasshook__(cls, subclass):
         return True

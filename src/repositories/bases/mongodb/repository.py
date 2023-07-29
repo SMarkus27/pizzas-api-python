@@ -26,7 +26,9 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
     @classmethod
     async def get_base_collection(cls):
         if cls._collection_in_connection is None:
-            cls._collection_in_connection: AsyncIOMotorCollection = await cls._set_base_connection()
+            cls._collection_in_connection: AsyncIOMotorCollection = (
+                await cls._set_base_connection()
+            )
         return cls._collection_in_connection
 
     @classmethod
@@ -35,7 +37,9 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
         await collection.insert_one(data)
 
     @classmethod
-    async def find_all(cls, query: dict, projection: dict = None, limit: int = None, sort: tuple = None):
+    async def find_all(
+        cls, query: dict, projection: dict = None, limit: int = None, sort: tuple = None
+    ):
         collection = await cls.get_base_collection()
         result = collection.find(query, projection)
         if sort:
@@ -52,10 +56,18 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
         return result
 
     @classmethod
-    async def update_one(cls, query: dict, new_data: dict, array_filters: list = None, upsert: bool = False):
+    async def update_one(
+        cls,
+        query: dict,
+        new_data: dict,
+        array_filters: list = None,
+        upsert: bool = False,
+    ):
         collection = await cls.get_base_collection()
         new = {"$set": new_data}
-        result = await collection.update_one(query, new, array_filters=array_filters, upsert=upsert)
+        result = await collection.update_one(
+            query, new, array_filters=array_filters, upsert=upsert
+        )
         return result
 
     @classmethod
@@ -65,7 +77,14 @@ class BaseMongoDBRepo(MongoDBInfra, IBaseMongoDBRepo):
         return result
 
     @classmethod
-    async def find_all_paginated(cls, query: dict, skip: int, limit: int, projection: dict = None, sort: tuple = None):
+    async def find_all_paginated(
+        cls,
+        query: dict,
+        skip: int,
+        limit: int,
+        projection: dict = None,
+        sort: tuple = None,
+    ):
         collection = await cls.get_base_collection()
         total_items = await collection.count_documents(query)
 

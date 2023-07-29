@@ -1,8 +1,8 @@
+from src.core.interfaces.controllers.pizzas.interface import IPizzasController
 from src.services.pizzas.service import PizzaService
 
 
-class PizzasController:
-
+class PizzasController(IPizzasController):
     @staticmethod
     async def create_pizza(payload: dict):
         return await PizzaService.create_pizza(payload)

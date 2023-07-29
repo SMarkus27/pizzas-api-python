@@ -11,7 +11,8 @@ router = BaseRouter.get_router_instance()
 @router.post("/api/pizzas/", tags=["Pizzas"])
 async def create_pizza(pizza_data: PizzaModel):
     return await BaseController.run(
-        PizzasController.create_pizza, {"payload": pizza_data.dict()})
+        PizzasController.create_pizza, {"payload": pizza_data.dict()}
+    )
 
 
 @router.get("/api/pizzas/", tags=["Pizzas"])
@@ -31,7 +32,8 @@ async def get_one_pizza(pizza_name: str):
 @router.put("/api/pizzas/{pizza_name}", tags=["Pizzas"])
 async def update_pizza(pizza_name: str, new_data: PizzaModel):
     return await BaseController.run(
-        PizzasController.update_pizza, {"pizza_name": pizza_name, "data": new_data.dict()}
+        PizzasController.update_pizza,
+        {"pizza_name": pizza_name, "data": new_data.dict()},
     )
 
 

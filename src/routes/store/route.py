@@ -11,7 +11,8 @@ router = BaseRouter.get_router_instance()
 @router.post("/api/stores/", tags=["store"])
 async def add_item_store(store_data: StoreModel):
     return await BaseController.run(
-        StoreController.add_item_store, {"payload": store_data.dict()})
+        StoreController.add_item_store, {"payload": store_data.dict()}
+    )
 
 
 @router.put("/api/stores/", tags=["store"])

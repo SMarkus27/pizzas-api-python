@@ -6,7 +6,6 @@ from src.repositories.store.repository import StoreRepository
 
 
 class IOrderService(metaclass=ABCMeta):
-
     @classmethod
     def __subclasshook__(cls, subclass):
         return True
@@ -23,5 +22,11 @@ class IOrderService(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    async def get_pizza(cls, payload: dict, order_repo=OrderRepository, store_repo=StoreRepository, pizza_repo=PizzasRepository):
+    async def get_pizza(
+        cls,
+        payload: dict,
+        order_repo=OrderRepository,
+        store_repo=StoreRepository,
+        pizza_repo=PizzasRepository,
+    ):
         pass

@@ -17,9 +17,7 @@ async def get_orders(size=Header(), page=Header()):
 
 @router.get("/api/orders/{order_id}", tags=["orders"])
 async def get_order(order_id: str):
-    return await BaseController.run(
-        OrderController.get_order, {"order_id": order_id}
-    )
+    return await BaseController.run(OrderController.get_order, {"order_id": order_id})
 
 
 @router.post("/api/orders/", tags=["orders"])

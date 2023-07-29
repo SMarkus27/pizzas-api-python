@@ -1,8 +1,8 @@
+from src.core.interfaces.controllers.store.interface import IStoreController
 from src.services.store.service import StoreService
 
 
-class StoreController:
-
+class StoreController(IStoreController):
     @staticmethod
     async def add_item_store(payload: dict):
         return await StoreService.add_item_store(payload)

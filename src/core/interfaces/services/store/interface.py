@@ -4,7 +4,6 @@ from src.repositories.store.repository import StoreRepository
 
 
 class IStoreService(metaclass=ABCMeta):
-
     @classmethod
     def __subclasshook__(cls, subclass):
         return True
