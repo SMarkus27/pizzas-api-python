@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from fastapi import status
 
+from src.core.interfaces.services.orders.interface import IOrderService
 from src.domain.models.responses.base.model import BaseResponse
 from src.domain.models.responses.orders.model import OrdersResponse
 from src.repositories.orders.repository import OrderRepository
@@ -11,7 +12,7 @@ from src.repositories.store.repository import StoreRepository
 from src.services.store.service import StoreService
 
 
-class OrderService:
+class OrderService(IOrderService):
 
     @classmethod
     async def get_orders(cls, payload: dict, order_repo=OrderRepository):

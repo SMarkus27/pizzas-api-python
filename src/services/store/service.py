@@ -2,12 +2,13 @@ from datetime import datetime
 
 from fastapi import status
 
+from src.core.interfaces.services.store.interface import IStoreService
 from src.domain.models.responses.base.model import BaseResponse
 from src.domain.models.responses.store.model import StoreResponse
 from src.repositories.store.repository import StoreRepository
 
 
-class StoreService:
+class StoreService(IStoreService):
 
     @classmethod
     async def add_item_store(cls, payload: dict, store_repo=StoreRepository):
