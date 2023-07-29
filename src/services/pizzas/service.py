@@ -8,7 +8,6 @@ from src.repositories.pizzas.repository import PizzasRepository
 
 
 class PizzaService(IPizzaService):
-
     @classmethod
     async def create_pizza(cls, payload: dict, pizza_repo=PizzasRepository):
         data = payload.get("payload")
@@ -20,7 +19,7 @@ class PizzaService(IPizzaService):
         if price <= 0:
             return {
                 "status_code": status.HTTP_400_BAD_REQUEST,
-                "message": f"Price invalid: {price}. Price must be greater than zero"
+                "message": f"Price invalid: {price}. Price must be greater than zero",
             }
 
         pizza_data = await pizza_repo.find_one(query, projection)
@@ -28,15 +27,12 @@ class PizzaService(IPizzaService):
         if pizza_data:
             return {
                 "status_code": status.HTTP_200_OK,
-                "message": "Pizza already exist!. Try another pizza"
+                "message": "Pizza already exist!. Try another pizza",
             }
 
         data.update({"created_at": datetime.now().isoformat()})
         await pizza_repo.insert_one(data)
-        return {
-            "status_code": status.HTTP_201_CREATED,
-            "message": "Pizza created!"
-        }
+        return {"status_code": status.HTTP_201_CREATED, "message": "Pizza created!"}
 
     @classmethod
     async def find_all_pizzas(cls, payload: dict, pizza_repo=PizzasRepository):
@@ -46,15 +42,16 @@ class PizzaService(IPizzaService):
 
         skip = pizza_repo.calculate_skip(limit, page)
 
-        result, total_items = await pizza_repo.find_all_paginated({}, skip, limit, projection)
+        result, total_items = await pizza_repo.find_all_paginated(
+            {}, skip, limit, projection
+        )
         total_pages = pizza_repo.calculate_pages(total_items, limit)
 
         response = OrdersResponse(
             result=result,
             total_pages=total_pages,
             status_code=status.HTTP_302_FOUND,
-            message=""
-
+            message="",
         ).__dict__
         return response
 
@@ -73,10 +70,7 @@ class PizzaService(IPizzaService):
             ).__dict__
 
         response = BaseResponse(
-            result=result,
-            status_code=status.HTTP_302_FOUND,
-            message="Pizza Found"
-
+            result=result, status_code=status.HTTP_302_FOUND, message="Pizza Found"
         ).__dict__
         return response
 
@@ -92,7 +86,7 @@ class PizzaService(IPizzaService):
         if price <= 0:
             return {
                 "status_code": status.HTTP_400_BAD_REQUEST,
-                "message": f"Price invalid: {price}. Price must be greater than zero"
+                "message": f"Price invalid: {price}. Price must be greater than zero",
             }
 
         result = await pizza_repo.find_one(query, projection)
@@ -105,10 +99,7 @@ class PizzaService(IPizzaService):
 
         await pizza_repo.update_one(query, new_data)
         response = BaseResponse(
-            result=[],
-            status_code=status.HTTP_200_OK,
-            message="Pizza updated"
-
+            result=[], status_code=status.HTTP_200_OK, message="Pizza updated"
         ).__dict__
         return response
 
@@ -128,9 +119,6 @@ class PizzaService(IPizzaService):
 
         await pizza_repo.delete_one(query)
         response = BaseResponse(
-            result=[],
-            status_code=status.HTTP_200_OK,
-            message="Pizza updated"
-
+            result=[], status_code=status.HTTP_200_OK, message="Pizza updated"
         ).__dict__
         return response

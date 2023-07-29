@@ -18,4 +18,3 @@ class MongoDBInfra(IMongoDBInfra):
         if cls._mongodb_client is None:
             cls._mongodb_client = AsyncIOMotorClient(cls._mongodb_connection_url)
         return cls._mongodb_client
-

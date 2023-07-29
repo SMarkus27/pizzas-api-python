@@ -4,7 +4,6 @@ from src.repositories.pizzas.repository import PizzasRepository
 
 
 class IPizzaService(metaclass=ABCMeta):
-
     @classmethod
     def __subclasshook__(cls, subclass):
         return True

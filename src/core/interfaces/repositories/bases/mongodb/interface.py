@@ -2,7 +2,6 @@ from abc import ABCMeta, abstractmethod
 
 
 class IBaseMongoDBRepo(metaclass=ABCMeta):
-
     @classmethod
     def __subclasshook__(cls, subclass):
         return True
@@ -14,7 +13,9 @@ class IBaseMongoDBRepo(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    async def find_all(cls, query: dict, limit: int = None, projection: dict = None, sort: tuple = None):
+    async def find_all(
+        cls, query: dict, limit: int = None, projection: dict = None, sort: tuple = None
+    ):
         pass
 
     @classmethod
@@ -24,7 +25,13 @@ class IBaseMongoDBRepo(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    async def update_one(cls, query: dict, new_data: dict, array_filters: list = None, upsert: bool = False):
+    async def update_one(
+        cls,
+        query: dict,
+        new_data: dict,
+        array_filters: list = None,
+        upsert: bool = False,
+    ):
         pass
 
     @classmethod
