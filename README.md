@@ -1,14 +1,21 @@
 # Pizzas API Python
 
-This API manager storage, orders and types of pizzas.
+This API manages storage, orders, and types of pizzas.
 
 ### Tech Stack
 * Python 3.10
 * MongoDB
 
 ### First Step
+* Creates a virtual environment for the project.
+```
+python -m venv venv
+```
 * Install all packages in requirements.txt.
-* Create an .env file and use the .env_example file as model.
+```
+pip install -r requirements.txt
+```
+* Creates a .env file and uses the .env_example file as a model.
 
 ### Running the API
 ```
@@ -38,7 +45,7 @@ http://localhost:8000/api/pizzas/
 * Get all Pizzas
 
 
-Send request header, page size and values. To receive your Paginated data.
+Send request header, page size, and values. To receive your Paginated data.
 ```
 http://localhost:8000/api/pizzas/
 ```
@@ -75,7 +82,7 @@ http://localhost:8000/api/pizzas/pizza_name
 ```
 * Get all orders
 
-Send in your request header, a size value, and a value to page. To receive your Paginated data.
+Send in your request header, a size value, and a value to the page. To receive your Paginated data.
 
 ```
 http://localhost:8000/api/pizzas/pizza_name
@@ -94,21 +101,21 @@ http://localhost:8000/api/pizzas/pizza_name
 }
 ```
 
-* Create an item in Store
+* Create an item in the Store
 
-Send in the body of your request, the item you want to create. Use the Store model for this.
-
-```
-http://localhost:8000/api/store/
-```
-* Get all item in Store
-
-Send in your request header, a size value, and a value to page. To receive your Paginated data.
+Send the item you want to create in the body of your request. Use the Store model for this.
 
 ```
 http://localhost:8000/api/store/
 ```
-* Update a specific item in Store
+* Get all items in the Store
+
+Send in your request header, a size value, and a value to the page. To receive your Paginated data.
+
+```
+http://localhost:8000/api/store/
+```
+* Update a specific item in the Store
 
 Send the data of the store item you want to update in the body of your request. Use the Store model for this.
 
