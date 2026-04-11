@@ -1,7 +1,7 @@
 from src.repositories.store.repository import StoreRepository
 
-class GetAllStoreService:
 
+class GetAllStoreService:
     def __init__(self, repository: StoreRepository):
         self._repository = repository
 
@@ -17,6 +17,6 @@ class GetAllStoreService:
             "result": result,
             "total_items": total_items,
             "page": page,
-            "total_pages": total_pages
+            "total_pages": total_pages,
         }
         return result

@@ -1,9 +1,7 @@
 from src.repositories.orders.repository import OrderRepository
 
 
-
 class GetAllOrderService:
-
     def __init__(self, repository: OrderRepository):
         self._repository = repository
 
@@ -19,6 +17,6 @@ class GetAllOrderService:
             "result": result,
             "total_items": total_items,
             "page": page,
-            "total_pages": total_pages
+            "total_pages": total_pages,
         }
         return result

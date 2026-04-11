@@ -5,7 +5,6 @@ from src.infrastructure.mongodb.repository import BaseMongoDBRepository
 
 
 class StoreRepository(BaseMongoDBRepository):
-
     def __init__(self, database: AsyncIOMotorDatabase):
         settings = get_settings()
         collection_name = settings.MONGODB_STORE_COLLECTION

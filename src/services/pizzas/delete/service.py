@@ -1,9 +1,8 @@
-from src.core.exceptions import NotFoundException
+from src.core.exceptions import NotFoundError
 from src.repositories.pizzas.repository import PizzaRepository
 
 
 class DeletePizzaService:
-
     def __init__(self, repository: PizzaRepository) -> None:
         self._repository = repository
 
@@ -13,6 +12,6 @@ class DeletePizzaService:
         result = await self._repository.find_one(query)
 
         if not result:
-            raise NotFoundException()
+            raise NotFoundError()
 
         await self._repository.delete_one(query)

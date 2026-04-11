@@ -1,4 +1,6 @@
-from fastapi.params import Depends
+from typing import Annotated
+
+from fastapi import Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from src.infrastructure.mongodb.client import get_db
@@ -10,21 +12,37 @@ from src.services.pizzas.get_all.service import GetAllPizzaService
 from src.services.pizzas.update.service import UpdatePizzaService
 
 
-def get_pizza_repo(db: AsyncIOMotorDatabase = Depends(get_db)) -> PizzaRepository:
+def get_pizza_repo(
+    db: Annotated[AsyncIOMotorDatabase, Depends(get_db)],
+) -> PizzaRepository:
     return PizzaRepository(db)
 
-def get_create_pizza_service(repository: PizzaRepository = Depends(get_pizza_repo)) -> CreatePizzaService:
+
+def get_create_pizza_service(
+    repository: Annotated[PizzaRepository, Depends(get_pizza_repo)],
+) -> CreatePizzaService:
     return CreatePizzaService(repository)
 
-def get_all_pizza_service(repository: PizzaRepository = Depends(get_pizza_repo)) -> GetAllPizzaService:
+
+def get_all_pizza_service(
+    repository: Annotated[PizzaRepository, Depends(get_pizza_repo)],
+) -> GetAllPizzaService:
     return GetAllPizzaService(repository)
 
-def get_get_pizza_service(repository: PizzaRepository = Depends(get_pizza_repo)) -> GetPizzaService:
+
+def get_get_pizza_service(
+    repository: Annotated[PizzaRepository, Depends(get_pizza_repo)],
+) -> GetPizzaService:
     return GetPizzaService(repository)
 
-def get_update_pizza_service(repository: PizzaRepository = Depends(get_pizza_repo)) -> UpdatePizzaService:
+
+def get_update_pizza_service(
+    repository: Annotated[PizzaRepository, Depends(get_pizza_repo)],
+) -> UpdatePizzaService:
     return UpdatePizzaService(repository)
 
-def get_delete_pizza_service(repository: PizzaRepository = Depends(get_pizza_repo)) -> DeletePizzaService:
-    return DeletePizzaService(repository)
 
+def get_delete_pizza_service(
+    repository: Annotated[PizzaRepository, Depends(get_pizza_repo)],
+) -> DeletePizzaService:
+    return DeletePizzaService(repository)

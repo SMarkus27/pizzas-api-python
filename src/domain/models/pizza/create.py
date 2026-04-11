@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field, field_validator
 
-from src.core.exceptions import InvalidIngredientException
+from src.core.exceptions import InvalidIngredientError
+
+
+MIN_INGREDIENT_LENGTH = 3
 
 
 class CreatePizzaInSchema(BaseModel):
@@ -12,10 +15,9 @@ class CreatePizzaInSchema(BaseModel):
     @classmethod
     def validate_ingredients(cls, items: list[str]) -> list[str]:
         for item in items:
-            if len(item.strip()) < 3:
-                raise InvalidIngredientException()
+            if len(item.strip()) < MIN_INGREDIENT_LENGTH:
+                raise InvalidIngredientError()
         return [item.strip() for item in items]
-
 
 
 class CreatePizzaOutSchema(BaseModel):

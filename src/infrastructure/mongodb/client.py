@@ -4,7 +4,6 @@ from src.core.settings import get_settings
 
 
 class MongoDBConnection:
-
     _client: AsyncIOMotorClient = None
 
     @classmethod
@@ -15,14 +14,12 @@ class MongoDBConnection:
             cls._client = AsyncIOMotorClient(url)
         return cls._client
 
-
     @classmethod
     def get_database(cls) -> AsyncIOMotorDatabase:
         client = cls.get_client()
         settings = get_settings()
         db_name = settings.MONGODB_DATABASE_NAME
         return client[db_name]
-
 
     @classmethod
     def close_client(cls):
