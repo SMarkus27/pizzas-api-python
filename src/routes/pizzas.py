@@ -50,7 +50,7 @@ async def get_one_pizza(
     return Response(data={"result": result}, status_code=status.HTTP_200_OK)
 
 
-@router.put("/{pizza_external_id}", status_code=status.HTTP_200_OK)
+@router.patch("/{pizza_external_id}", status_code=status.HTTP_200_OK)
 async def update_pizza(
     pizza_external_id: str,
     data: UpdatePizzaInSchema,
