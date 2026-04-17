@@ -1,9 +1,9 @@
 from src.core.exceptions import NotFoundError
-from src.repositories.pizzas.repository import PizzaRepository
+from src.core.protocols.repository import BaseRepositoryProtocol
 
 
 class DeletePizzaService:
-    def __init__(self, repository: PizzaRepository) -> None:
+    def __init__(self, repository: BaseRepositoryProtocol) -> None:
         self._repository = repository
 
     async def delete(self, pizza_external_id: str):

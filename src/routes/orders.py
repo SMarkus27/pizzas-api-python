@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status
 
 from src.domain.common.response import Response
-from src.domain.models.order.model import CreateOrderInSchema
+from src.services.orders.create.schemas import CreateOrderInSchema
 from src.services.orders.create.service import CreateOrderService
 from src.services.orders.dependencies import (
     get_all_order_service,

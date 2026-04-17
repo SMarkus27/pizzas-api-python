@@ -1,24 +1,33 @@
+from datetime import datetime, timezone
+from uuid import uuid4
+
 from src.core.exceptions import ConflictError
-from src.domain.models.pizza.create import CreatePizzaInSchema
-from src.infrastructure.documents.pizza import PizzaDocument
-from src.repositories.pizzas.repository import PizzaRepository
+from src.core.protocols.repository import BaseRepositoryProtocol
+from src.domain.entities.pizza import Pizza
+from src.services.pizzas.create.schemas import CreatePizzaInSchema
 
 
 class CreatePizzaService:
-    def __init__(self, repository: PizzaRepository) -> None:
+    def __init__(self, repository: BaseRepositoryProtocol) -> None:
         self._repository = repository
 
     async def create(self, data: CreatePizzaInSchema):
-        query = {"name": data.name}
+        pizza = Pizza(name=data.name, price=data.price, ingredients=data.ingredients)
 
-        pizza_data = await self._repository.find_one(query)
+        query = {"name": pizza.name}
+        existing_pizza = await self._repository.find_one(query)
+        if existing_pizza:
+            raise ConflictError("Pizza already exists! Try another name.")
 
-        if pizza_data:
-            raise ConflictError("Pizza already exist!. Try another pizza")
+        external_id = str(uuid4())
+        pizza_to_save = {
+            "external_id": external_id,
+            "name": pizza.name,
+            "price": pizza.price,
+            "ingredients": pizza.ingredients,
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": None,
+        }
 
-        pizza = PizzaDocument(
-            name=data.name, price=data.price, ingredients=data.ingredients
-        )
-
-        await self._repository.insert_one(pizza.to_dict())
-        return {"pizza_external_id": pizza.external_id}
+        await self._repository.insert_one(pizza_to_save)
+        return {"pizza_external_id": external_id}

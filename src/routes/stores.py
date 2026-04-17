@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status
 
 from src.domain.common.response import Response
-from src.domain.models.store.model import CreateStoreInSchema
+from src.services.stores.create.schemas import CreateStoreInSchema
 from src.services.stores.create.service import CreateStoreService
 from src.services.stores.dependencies import (
     get_all_store_service,
@@ -11,6 +11,7 @@ from src.services.stores.dependencies import (
     get_update_store_service,
 )
 from src.services.stores.get_all.service import GetAllStoreService
+from src.services.stores.update.schemas import UpdateStoreInSchema
 from src.services.stores.update.service import UpdateStoreService
 
 
@@ -36,10 +37,25 @@ async def get_all_store_items(
     return Response(data={"result": data}, status_code=status.HTTP_200_OK)
 
 
-@router.put("/", status_code=status.HTTP_200_OK)
-async def update_store_item(
-    data: CreateStoreInSchema,
+@router.patch("/increase", status_code=status.HTTP_200_OK)
+async def increase_store_item(
+    data: UpdateStoreInSchema,
     service: Annotated[UpdateStoreService, Depends(get_update_store_service)],
 ):
-    await service.update(data)
-    return Response(data={"result": data}, status_code=status.HTTP_200_OK)
+    await service.increase(data)
+    return Response(
+        data={"message": "Quantity increased successfully"},
+        status_code=status.HTTP_200_OK,
+    )
+
+
+@router.patch("/decrease", status_code=status.HTTP_200_OK)
+async def decrease_store_item(
+    data: UpdateStoreInSchema,
+    service: Annotated[UpdateStoreService, Depends(get_update_store_service)],
+):
+    await service.decrease(data)
+    return Response(
+        data={"message": "Quantity decreased successfully"},
+        status_code=status.HTTP_200_OK,
+    )

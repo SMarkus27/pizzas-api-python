@@ -1,8 +1,9 @@
-from src.repositories.orders.repository import OrderRepository
+from src.core.protocols.repository import BaseRepositoryProtocol
+from src.core.utils import calculate_pages
 
 
 class GetAllOrderService:
-    def __init__(self, repository: OrderRepository):
+    def __init__(self, repository: BaseRepositoryProtocol):
         self._repository = repository
 
     async def get_orders(self, page: int, size: int):
@@ -11,7 +12,7 @@ class GetAllOrderService:
         result, total_items = await self._repository.find_all_paginated(
             {}, page, size, projection
         )
-        total_pages = self._repository.calculate_pages(total_items, size)
+        total_pages = calculate_pages(total_items, size)
 
         result = {
             "result": result,

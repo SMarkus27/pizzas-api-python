@@ -39,24 +39,11 @@ target-version = "py310"
 
 [lint]
 # Regras selecionadas
-# E/F: Pyflakes e erros do pycodestyle
-# W: Avisos do pycodestyle
-# I: isort (organização de imports)
-# N: pep8-naming (padronização de nomes)
-# UP: pyupgrade (sugestões de sintaxe moderna)
-# B: flake8-bugbear (bugs comuns)
-# C4: flake8-comprehensions
-# SIM: flake8-simplify (simplificação de código)
-# TCH: flake8-type-checking (melhoria em imports de tipagem)
-# ARG: flake8-unused-arguments (argumentos não utilizados)
-# PTH: flake8-use-pathlib (preferir pathlib sobre os.path)
-# PL: Pylint
-# RUF: Regras específicas do Ruff
 select = [
     "E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "TCH", "ARG", "PTH", "PL", "RUF"
 ]
 
-# Regras a serem ignoradas
+# Regras a serem ignoradas globalmente
 ignore = [
     "E501", # Line too long (já controlado pelo formatador)
     "PLR0913", # Too many arguments in function definition
@@ -68,6 +55,11 @@ unfixable = []
 
 # Permitir nomes de variáveis comuns que o Ruff costuma reclamar
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Configuração de exceções por arquivo
+[lint.per-file-ignores]
+# Ignorar "Magic numbers" nos testes, pois é comum comparar com valores fixos
+"tests/**/*.py" = ["PLR2004"]
 
 [format]
 # Configurações de formatação (estilo Black)

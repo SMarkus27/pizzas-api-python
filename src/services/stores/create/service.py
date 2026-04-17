@@ -1,22 +1,32 @@
+from datetime import datetime, timezone
+from uuid import uuid4
+
 from src.core.exceptions import ConflictError
-from src.domain.models.store.model import CreateStoreInSchema
-from src.infrastructure.documents.store import StoreDocument
-from src.repositories.store.repository import StoreRepository
+from src.core.protocols.repository import BaseRepositoryProtocol
+from src.domain.entities.store import Store
+from src.services.stores.create.schemas import CreateStoreInSchema
 
 
 class CreateStoreService:
-    def __init__(self, repository: StoreRepository):
+    def __init__(self, repository: BaseRepositoryProtocol):
         self._repository = repository
 
     async def create(self, data: CreateStoreInSchema):
-        query = {"name": data.name}
+        store = Store(name=data.name, quantity=data.quantity)
 
-        result = await self._repository.find_one(query)
+        query = {"name": store.name}
+        existing_item = await self._repository.find_one(query)
+        if existing_item:
+            raise ConflictError(message="Store item already exists")
 
-        if result:
-            raise ConflictError(message="Store item already exist")
+        external_id = str(uuid4())
+        store_to_save = {
+            "external_id": external_id,
+            "name": store.name,
+            "quantity": store.quantity,
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": None,
+        }
 
-        store = StoreDocument(name=data.name, quantity=data.quantity)
-
-        await self._repository.insert_one(store.to_dict())
-        return {"store_external_id": store.external_id}
+        await self._repository.insert_one(store_to_save)
+        return {"store_external_id": external_id}

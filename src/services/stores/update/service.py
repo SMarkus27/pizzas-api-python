@@ -1,37 +1,40 @@
 from datetime import datetime, timezone
 
 from src.core.exceptions import (
-    BadRequestError,
-    ConflictError,
     NotFoundError,
 )
-from src.domain.models.store.model import UpdateStoreInSchema
-from src.repositories.store.repository import StoreRepository
+from src.core.protocols.repository import BaseRepositoryProtocol
+from src.domain.entities.store import Store
+from src.services.stores.update.schemas import UpdateStoreInSchema
 
 
 class UpdateStoreService:
-    def __init__(self, repository: StoreRepository):
+    def __init__(self, repository: BaseRepositoryProtocol):
         self._repository = repository
 
-    async def update(self, data: UpdateStoreInSchema) -> None:
-        query = {"name": data.name}
-
+    async def _get_store_entity(self, name: str) -> Store:
+        query = {"name": name}
         result = await self._repository.find_one(query)
 
         if not result:
-            raise NotFoundError()
+            raise NotFoundError(message=f"Store item '{name}' not found")
 
-        old_quantity = result.get("quantity")
-        if old_quantity == 0:
-            raise ConflictError("This product is empty")
+        return Store(name=result["name"], quantity=result["quantity"])
 
-        quantity = data.quantity
-
-        if quantity > old_quantity:
-            raise BadRequestError(f"Quantity must be less than {old_quantity}")
-
-        new_quantity = old_quantity - quantity
+    async def increase(self, data: UpdateStoreInSchema) -> None:
+        store = await self._get_store_entity(data.name)
+        store.increase_quantity(data.quantity)
 
         await self._repository.update_one(
-            query, {"quantity": new_quantity, "updated_at": datetime.now(timezone.utc)}
+            {"name": store.name},
+            {"quantity": store.quantity, "updated_at": datetime.now(timezone.utc)},
+        )
+
+    async def decrease(self, data: UpdateStoreInSchema) -> None:
+        store = await self._get_store_entity(data.name)
+        store.decrease_quantity(data.quantity)
+
+        await self._repository.update_one(
+            {"name": store.name},
+            {"quantity": store.quantity, "updated_at": datetime.now(timezone.utc)},
         )

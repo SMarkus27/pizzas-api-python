@@ -3,8 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status
 
 from src.domain.common.response import Response
-from src.domain.models.pizza.create import CreatePizzaInSchema
-from src.domain.models.pizza.update import UpdatePizzaInSchema
+from src.services.pizzas.create.schemas import CreatePizzaInSchema
 from src.services.pizzas.create.service import CreatePizzaService
 from src.services.pizzas.delete.service import DeletePizzaService
 from src.services.pizzas.dependencies import (
@@ -16,6 +15,7 @@ from src.services.pizzas.dependencies import (
 )
 from src.services.pizzas.get.service import GetPizzaService
 from src.services.pizzas.get_all.service import GetAllPizzaService
+from src.services.pizzas.update.schemas import UpdatePizzaInSchema
 from src.services.pizzas.update.service import UpdatePizzaService
 
 
@@ -34,7 +34,7 @@ async def create_pizza(
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_all_pizzas(
     service: Annotated[GetAllPizzaService, Depends(get_all_pizza_service)],
-    page: Annotated[int, Query()] = 1,
+    page: Annotated[int, Query(ge=1)] = 1,
     size: Annotated[int, Query()] = 10,
 ):
     result = await service.get_all(page, size)

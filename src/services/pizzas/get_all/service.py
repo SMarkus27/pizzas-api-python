@@ -1,8 +1,9 @@
-from src.repositories.pizzas.repository import PizzaRepository
+from src.core.protocols.repository import BaseRepositoryProtocol
+from src.core.utils import calculate_pages
 
 
 class GetAllPizzaService:
-    def __init__(self, repository: PizzaRepository) -> None:
+    def __init__(self, repository: BaseRepositoryProtocol) -> None:
         self._repository = repository
 
     async def get_all(self, page: int, size: int):
@@ -12,7 +13,7 @@ class GetAllPizzaService:
             {}, page, size, projection=projection
         )
 
-        total_pages = self._repository.calculate_pages(total_items, size)
+        total_pages = calculate_pages(total_items, size)
 
         result = {
             "result": result,

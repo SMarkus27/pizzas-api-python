@@ -1,4 +1,3 @@
-from math import ceil
 from typing import Any
 
 from motor.motor_asyncio import AsyncIOMotorDatabase
@@ -66,7 +65,3 @@ class BaseMongoDBRepository:
 
         results = await cursor.skip(skip).limit(limit).to_list(limit)
         return results, total_items
-
-    @staticmethod
-    def calculate_pages(total_items: int, limit: int) -> int:
-        return ceil(total_items / limit) if limit > 0 else 0
