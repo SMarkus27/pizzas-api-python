@@ -35,10 +35,10 @@ async def test_complete_pizza_order_flow(async_client: AsyncClient):
     pepperoni_stock = next(item for item in store_items if item["name"] == "Pepperoni")
     assert pepperoni_stock["quantity"] == 8
 
-    # 5. Get the order details to verify final price
     get_order_res = await async_client.get(f"/api/orders/{order_external_id}")
     assert get_order_res.status_code == 200
     order_details = get_order_res.json()["data"]["result"]
+
     # 35.0 * 2 = 70.0
     assert order_details["price"] == 70.0
     assert order_details["quantity"] == 2

@@ -1,7 +1,3 @@
-"""
-Testes de integração — Orders
-"""
-
 import pytest
 from httpx import AsyncClient
 

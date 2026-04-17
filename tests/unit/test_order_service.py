@@ -42,8 +42,6 @@ async def test_get_order_success(
     result = await service.get_order("123")
 
     assert result.get("quantity") == 2
-    # O preço total é pizza_price * quantity (30 * 2 = 60) no CreateOrderService,
-    # mas a fixture create_order insere 30.0 diretamente.
     assert result.get("price") == 30.0
 
 

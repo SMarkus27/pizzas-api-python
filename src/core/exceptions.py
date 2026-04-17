@@ -27,17 +27,17 @@ class UnprocessableError(AppError):
 
 class InvalidPriceError(AppError):
     def __init__(self, price: float):
-        self.message = f"Preço inválido: {price}. O preço deve ser maior que zero."
+        self.message = f"Invalid price: {price}. Price must be greater than zero."
         super().__init__(self.message, status_code=400)
 
 
 class InvalidNameError(AppError):
-    def __init__(self):
-        self.message = "O Nome deve ter no minimo 3 caracteres."
+    def __init__(self, message: str = "Name must have at least 3 characters."):
+        self.message = message
         super().__init__(self.message, status_code=400)
 
 
 class InvalidIngredientError(AppError):
-    def __init__(self):
-        self.message = "O Ingrediente deve ter no minimo 3 caracteres."
+    def __init__(self, message: str = "Ingredient must have at least 3 characters."):
+        self.message = message
         super().__init__(self.message, status_code=400)

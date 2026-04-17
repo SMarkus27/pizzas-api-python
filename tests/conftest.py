@@ -15,10 +15,6 @@ from src.repositories.store.repository import StoreRepository
 
 settings = get_settings()
 
-
-# ─── Banco de testes ────────────────────────────────────────────────────────
-
-
 @pytest.fixture
 def mongo_client() -> AsyncIOMotorClient:
     client = AsyncIOMotorClient(settings.MONGODB_CONNECTION_URL)
@@ -70,10 +66,6 @@ def order_repo(test_db: AsyncIOMotorDatabase) -> OrderRepository:
 
 @pytest.fixture
 def seed_pizza(pizza_repo: PizzaRepository):
-    """
-    Insere uma pizza no banco de teste usando dicionários puros.
-    """
-
     async def _seed(
         name: str = "Margherita",
         price: float = 30.0,
@@ -95,10 +87,6 @@ def seed_pizza(pizza_repo: PizzaRepository):
 
 @pytest.fixture
 def seed_store(store_repo: StoreRepository):
-    """
-    Insere um item de estoque no banco de teste usando dicionários puros.
-    """
-
     async def _seed(
         name: str = "Margherita",
         quantity: int = 10,
@@ -118,10 +106,6 @@ def seed_store(store_repo: StoreRepository):
 
 @pytest.fixture
 def seed_order(order_repo: OrderRepository):
-    """
-    Insere um pedido no banco de teste usando dicionários puros.
-    """
-
     async def _seed(
         name: str = "Margherita",
         quantity: int = 1,

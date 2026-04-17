@@ -43,11 +43,11 @@ class FakeRepository:
         self,
         _query: dict[
             str, Any
-        ],  # Prefixed with _ as it's not fully used in this fake implementation
+        ],
         page: int,
         limit: int,
-        _projection: dict[str, Any] | None = None,  # Prefixed with _
-        _sort: tuple | None = None,  # Prefixed with _
+        _projection: dict[str, Any] | None = None,
+        _sort: tuple | None = None,
     ) -> tuple[list[dict[str, Any]], int]:
         items = list(self._data.values())
         total_items = len(items)
