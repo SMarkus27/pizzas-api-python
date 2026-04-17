@@ -144,7 +144,7 @@ async def test_get_all_orders_empty(async_client: AsyncClient):
 
     assert response.status_code == 200
     data = response.json()["data"]
-    assert data["result"] == []
+    assert data["items"] == []
     assert data["total_items"] == 0
 
 
@@ -158,7 +158,7 @@ async def test_get_all_orders_with_data(async_client: AsyncClient, seed_order):
     assert response.status_code == 200
     data = response.json()["data"]
     assert data["total_items"] == 2
-    assert len(data["result"]) == 2
+    assert len(data["items"]) == 2
 
 
 # ---------------------------------------------------------------------------

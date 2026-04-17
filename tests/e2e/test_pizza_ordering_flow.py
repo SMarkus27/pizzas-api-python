@@ -13,12 +13,10 @@ async def test_complete_pizza_order_flow(async_client: AsyncClient):
     5. Get the order details
     """
 
-    # 1. Create stock for "Pepperoni"
     store_data = {"name": "Pepperoni", "quantity": 10}
     store_res = await async_client.post("/api/stores/", json=store_data)
     assert store_res.status_code == 201
 
-    # 2. Create "Pepperoni" Pizza
     pizza_data = {
         "name": "Pepperoni",
         "price": 35.0,
@@ -27,17 +25,13 @@ async def test_complete_pizza_order_flow(async_client: AsyncClient):
     pizza_res = await async_client.post("/api/pizzas/", json=pizza_data)
     assert pizza_res.status_code == 201
 
-    # 3. Create an order for 2 Pepperoni Pizzas
     order_data = {"name": "Pepperoni", "quantity": 2}
     order_res = await async_client.post("/api/orders/", json=order_data)
     assert order_res.status_code == 201
     order_external_id = order_res.json()["data"]["result"]["order_external_id"]
 
-    # 4. Verify stock decreased to 8
-    # Using the GET all stores to verify
     stores_list_res = await async_client.get("/api/stores/")
-    # Accessing with the correct double nesting discovered before
-    store_items = stores_list_res.json()["data"]["result"]["result"]
+    store_items = stores_list_res.json()["data"]["items"]
     pepperoni_stock = next(item for item in store_items if item["name"] == "Pepperoni")
     assert pepperoni_stock["quantity"] == 8
 

@@ -68,8 +68,8 @@ async def test_get_all_store_items_empty(async_client: AsyncClient):
     response = await async_client.get("/api/stores/")
 
     assert response.status_code == 200
-    data = response.json()["data"]["result"]
-    assert data["result"] == []
+    data = response.json()["data"]
+    assert data["items"] == []
     assert data["total_items"] == 0
 
 
@@ -81,9 +81,9 @@ async def test_get_all_store_items_with_data(async_client: AsyncClient, seed_sto
     response = await async_client.get("/api/stores/")
 
     assert response.status_code == 200
-    data = response.json()["data"]["result"]
+    data = response.json()["data"]
     assert data["total_items"] == 2
-    assert len(data["result"]) == 2
+    assert len(data["items"]) == 2
 
 
 # ---------------------------------------------------------------------------

@@ -23,18 +23,18 @@ async def create_store_item(
     data: CreateStoreInSchema,
     service: Annotated[CreateStoreService, Depends(get_create_store_service)],
 ):
-    data = await service.create(data)
-    return Response(data={"result": data}, status_code=status.HTTP_201_CREATED)
+    result = await service.create(data)
+    return Response(data={"result": result}, status_code=status.HTTP_201_CREATED)
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_all_store_items(
     service: Annotated[GetAllStoreService, Depends(get_all_store_service)],
-    page: Annotated[int, Query()] = 1,
+    page: Annotated[int, Query(ge=1)] = 1,
     size: Annotated[int, Query()] = 10,
 ):
-    data = await service.get_all(page, size)
-    return Response(data={"result": data}, status_code=status.HTTP_200_OK)
+    result = await service.get_all(page, size)
+    return Response(data=result, status_code=status.HTTP_200_OK)
 
 
 @router.patch("/increase", status_code=status.HTTP_200_OK)

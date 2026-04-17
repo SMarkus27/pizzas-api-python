@@ -110,7 +110,7 @@ async def test_get_all_pizzas_empty(async_client: AsyncClient):
 
     assert response.status_code == 200
     data = response.json()["data"]
-    assert data["result"] == []
+    assert data["items"] == []
     assert data["total_items"] == 0
 
 
@@ -124,7 +124,7 @@ async def test_get_all_pizzas_with_data(async_client: AsyncClient, seed_pizza):
     assert response.status_code == 200
     data = response.json()["data"]
     assert data["total_items"] == 2
-    assert len(data["result"]) == 2
+    assert len(data["items"]) == 2
 
 
 @pytest.mark.asyncio
@@ -137,7 +137,7 @@ async def test_get_all_pizzas_pagination(async_client: AsyncClient, seed_pizza):
 
     assert response.status_code == 200
     data = response.json()["data"]
-    assert len(data["result"]) == 2
+    assert len(data["items"]) == 2
     assert data["total_items"] == 3
     assert data["total_pages"] == 2
 
@@ -173,7 +173,7 @@ async def test_get_pizza_not_found_returns_404(async_client: AsyncClient):
 
 
 # ---------------------------------------------------------------------------
-# PUT /api/pizzas/{external_id}
+# PATCH /api/pizzas/{external_id}
 # ---------------------------------------------------------------------------
 
 

@@ -1,4 +1,3 @@
-from math import ceil
 from typing import Any
 
 
@@ -55,7 +54,3 @@ class FakeRepository:
 
         skip = (page - 1) * limit
         return items[skip : skip + limit], total_items
-
-    @staticmethod
-    def calculate_pages(total_items: int, limit: int) -> int:
-        return ceil(total_items / limit) if limit > 0 else 0

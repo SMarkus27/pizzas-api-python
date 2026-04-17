@@ -14,10 +14,9 @@ class GetAllStoreService:
         )
         total_pages = calculate_pages(total_items, size)
 
-        result = {
-            "result": result,
+        return {
+            "items": result,
             "total_items": total_items,
             "page": page,
             "total_pages": total_pages,
         }
-        return result
