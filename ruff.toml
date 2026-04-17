@@ -1,0 +1,75 @@
+# Configuração do Ruff para Pizzas API Python
+
+# Excluir diretórios comuns
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+# Comprimento de linha padrão (seguindo Black)
+line-length = 88
+indent-width = 4
+
+# Versão alvo do Python
+target-version = "py310"
+
+[lint]
+# Regras selecionadas
+select = [
+    "E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "TCH", "ARG", "PTH", "PL", "RUF"
+]
+
+# Regras a serem ignoradas globalmente
+ignore = [
+    "E501", # Line too long (já controlado pelo formatador)
+    "PLR0913", # Too many arguments in function definition
+]
+
+# Permitir autofix para todas as regras habilitadas (quando suportado)
+fixable = ["ALL"]
+unfixable = []
+
+# Permitir nomes de variáveis comuns que o Ruff costuma reclamar
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Configuração de exceções por arquivo
+[lint.per-file-ignores]
+# Ignorar "Magic numbers" nos testes, pois é comum comparar com valores fixos
+"tests/**/*.py" = ["PLR2004"]
+
+[format]
+# Configurações de formatação (estilo Black)
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[lint.isort]
+# Configuração para o isort dentro do Ruff
+combine-as-imports = true
+lines-after-imports = 2
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
