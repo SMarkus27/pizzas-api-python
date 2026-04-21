@@ -1,6 +1,6 @@
 import pytest
 from src.domain.entities.store import Store
-from src.core.exceptions import BadRequestError
+from src.domain.exceptions import BadRequestError
 
 
 def test_store_entity_increase_success():

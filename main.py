@@ -6,13 +6,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from uvicorn import run
 
-from src.core.exceptions import (
+from src.domain.exceptions import (
     AppError,
     InvalidIngredientError,
     InvalidNameError,
     InvalidPriceError,
 )
-from src.routes import register_routes
+from src.infrastructure.http import register_routes
 
 
 logging.basicConfig(

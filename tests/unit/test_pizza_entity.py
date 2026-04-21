@@ -1,6 +1,6 @@
 import pytest
 from src.domain.entities.pizza import Pizza
-from src.core.exceptions import (
+from src.domain.exceptions import (
     InvalidNameError,
     InvalidPriceError,
     InvalidIngredientError,
