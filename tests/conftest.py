@@ -6,11 +6,11 @@ from httpx import ASGITransport, AsyncClient
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 from main import app
-from src.core.settings import get_settings
 from src.infrastructure.mongodb.client import get_db
-from src.repositories.orders.repository import OrderRepository
-from src.repositories.pizzas.repository import PizzaRepository
-from src.repositories.store.repository import StoreRepository
+from src.infrastructure.mongodb.order_repository import OrderRepository
+from src.infrastructure.mongodb.pizza_repository import PizzaRepository
+from src.infrastructure.mongodb.store_repository import StoreRepository
+from src.infrastructure.settings import get_settings
 
 
 settings = get_settings()

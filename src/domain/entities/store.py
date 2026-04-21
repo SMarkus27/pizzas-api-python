@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.core.exceptions import BadRequestError
+from src.domain.exceptions import BadRequestError
 
 
 @dataclass
