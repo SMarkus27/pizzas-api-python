@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.core.exceptions import (
+from src.domain.exceptions import (
     InvalidIngredientError,
     InvalidNameError,
     InvalidPriceError,

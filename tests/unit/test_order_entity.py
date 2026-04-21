@@ -1,6 +1,6 @@
 import pytest
 from src.domain.entities.order import Order
-from src.core.exceptions import BadRequestError
+from src.domain.exceptions import BadRequestError
 
 
 def test_order_entity_creation_success():

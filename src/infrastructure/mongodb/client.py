@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
-from src.core.settings import get_settings
+from src.infrastructure.settings import get_settings
 
 
 class MongoDBConnection:

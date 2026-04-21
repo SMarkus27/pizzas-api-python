@@ -1,18 +1,17 @@
 import pytest
 
-from src.core.exceptions import BadRequestError, ConflictError, NotFoundError
-from src.services.stores.create.schemas import CreateStoreInSchema
-from src.services.stores.create.service import CreateStoreService
-from src.services.stores.update.schemas import UpdateStoreInSchema
-from src.services.stores.update.service import UpdateStoreService
+from src.domain.exceptions import BadRequestError, ConflictError, NotFoundError
+from src.infrastructure.http.stores.schemas import CreateStoreInSchema, UpdateStoreInSchema
+from src.use_cases.stores.create import CreateStoreUseCase
+from src.use_cases.stores.update import UpdateStoreUseCase
 
 
 @pytest.mark.asyncio
 async def test_create_store_item_success(store_repository):
-    service = CreateStoreService(store_repository)
+    service = CreateStoreUseCase(store_repository)
     data = CreateStoreInSchema(name="Margherita", quantity=100)
 
-    result = await service.create(data)
+    result = await service.execute(data)
 
     assert "store_external_id" in result
     assert len(store_repository._data) == 1
@@ -21,17 +20,17 @@ async def test_create_store_item_success(store_repository):
 @pytest.mark.asyncio
 async def test_create_store_item_already_exists_fails(store_repository, create_store):
     _ = create_store
-    service = CreateStoreService(store_repository)
+    service = CreateStoreUseCase(store_repository)
     data = CreateStoreInSchema(name="Margherita", quantity=100)
 
     with pytest.raises(ConflictError):
-        await service.create(data)
+        await service.execute(data)
 
 
 @pytest.mark.asyncio
 async def test_increase_store_item_success(store_repository, create_store):
     _ = create_store
-    service = UpdateStoreService(store_repository)
+    service = UpdateStoreUseCase(store_repository)
     data = UpdateStoreInSchema(name="Margherita", quantity=5)
 
     await service.increase(data)
@@ -45,7 +44,7 @@ async def test_increase_store_item_success(store_repository, create_store):
 @pytest.mark.asyncio
 async def test_decrease_store_item_success(store_repository, create_store):
     _ = create_store
-    service = UpdateStoreService(store_repository)
+    service = UpdateStoreUseCase(store_repository)
     data = UpdateStoreInSchema(name="Margherita", quantity=5)
 
     await service.decrease(data)
@@ -61,7 +60,7 @@ async def test_decrease_store_item_insufficient_stock_fails(
     store_repository, create_store
 ):
     _ = create_store
-    service = UpdateStoreService(store_repository)
+    service = UpdateStoreUseCase(store_repository)
     data = UpdateStoreInSchema(name="Margherita", quantity=55)
 
     with pytest.raises(BadRequestError):
@@ -71,7 +70,7 @@ async def test_decrease_store_item_insufficient_stock_fails(
 @pytest.mark.asyncio
 async def test_update_store_item_not_found_fails(store_repository, create_store):
     _ = create_store
-    service = UpdateStoreService(store_repository)
+    service = UpdateStoreUseCase(store_repository)
     data = UpdateStoreInSchema(name="Invalid", quantity=1)
 
     with pytest.raises(NotFoundError):
@@ -81,7 +80,7 @@ async def test_update_store_item_not_found_fails(store_repository, create_store)
 @pytest.mark.asyncio
 async def test_decrease_store_item_empty_stock_fails(store_repository, create_store):
     _ = create_store
-    service = UpdateStoreService(store_repository)
+    service = UpdateStoreUseCase(store_repository)
 
     await store_repository.update_one({"name": "Margherita"}, {"quantity": 0})
 
